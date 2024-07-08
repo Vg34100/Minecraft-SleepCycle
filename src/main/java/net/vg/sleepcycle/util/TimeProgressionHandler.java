@@ -166,10 +166,10 @@ public class TimeProgressionHandler {
 
                 if (sleepingPlayerCount == 0) {
                     removeWorld(world);
-                } else {
-                    world.getGameRules().get(GameRules.RANDOM_TICK_SPEED).set(originalTickSpeed, server);
                 }
             }
+            world.getGameRules().get(GameRules.RANDOM_TICK_SPEED).set(originalTickSpeed, server);
+
         }
     }
 }
