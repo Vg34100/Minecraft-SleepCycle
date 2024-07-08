@@ -1,0 +1,33 @@
+{
+  "criteria": {
+    "has_bed": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#minecraft:beds"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "description": {
+      "translate": "advancements.sleepcycle.root.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:black_bed"
+    },
+    "title": {
+      "translate": "advancement.sleepcycle.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_bed"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

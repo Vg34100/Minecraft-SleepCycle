@@ -1,0 +1,22 @@
+{
+  "effect.sleepcycle.well_rested": "Well Rested",
+  "effect.sleepcycle.tired": "Tired",
+
+  "sounds.sleepcycle.well_rested": "Rested well",
+  "sounds.sleepcycle.tired": "Tired",
+  "sounds.sleepcycle.metal_detector_found_ore": "Metal Detector Jingle",
+
+  "advancement.sleepcycle.root.title": "Ready to Sleep",
+  "advancements.sleepcycle.root.description": "Make a bed",
+  "advancements.sleepcycle.well_rested.title": "Well Rested",
+  "advancements.sleepcycle.well_rested.description": "Gain the Well Rested effect",
+  "advancements.sleepcycle.tired.title": "Feeling Tired",
+  "advancements.sleepcycle.tired.description": "Gain the Tired effect",
+  "advancements.sleepcycle.sleep_5_min.title": "Heavy Sleeper",
+  "advancements.sleepcycle.sleep_5_min.description": "Sleep for a decently long time",
+
+  "stat.sleepcycle.time_slept": "Time Slept",
+  "stat.sleepcycle.well_rested_sleeps": "Well Rested Sleeps",
+  "stat.sleepcycle.tired_sleeps": "Tired Sleeps",
+  "stat.sleepcycle.health_regained": "Health Regained While Sleeping"
+}

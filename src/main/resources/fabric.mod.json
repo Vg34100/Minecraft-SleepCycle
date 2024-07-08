@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "sleepcycle",
+	"version": "${version}",
+	"name": "SleepCycle",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/sleepcycle/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.vg.sleepcycle.SleepCycle"
+		],
+		"client": [
+			"net.vg.sleepcycle.SleepCycleClient"
+		],
+		"fabric-datagen": [
+			"net.vg.sleepcycle.SleepCycleDataGenerator"
+		]
+	},
+	"mixins": [
+		"sleepcycle.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"required": true,
+	"package": "net.vg.sleepcycle.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"BedBlockMixin",
+		"PlayerEntityMixin",
+		"SleepManagerMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"client": [
+		"CameraMixin",
+		"SleepingChatScreenMixin"
+	]
+}

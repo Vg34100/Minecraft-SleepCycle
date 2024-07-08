@@ -1,0 +1,31 @@
+{
+  "parent": "sleepcycle:root",
+  "criteria": {
+    "tired": {
+      "conditions": {
+        "effects": {
+          "sleepcycle:tired": {}
+        }
+      },
+      "trigger": "minecraft:effects_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.sleepcycle.tired.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:potion"
+    },
+    "title": {
+      "translate": "advancements.sleepcycle.tired.title"
+    }
+  },
+  "requirements": [
+    [
+      "tired"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
