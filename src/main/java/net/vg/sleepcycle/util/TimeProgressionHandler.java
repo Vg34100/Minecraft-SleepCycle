@@ -27,7 +27,7 @@ public class TimeProgressionHandler {
     private static final int WELL_RESTED_DURATION = ModConfigs.WELL_RESTED_WAIT; // 8 in-game hours
     private static final int TIRED_DURATION = ModConfigs.TIRED_WAIT; // 16 in-game hours
     private static int originalTickSpeed;
-    private static final int SLEEP_ADVANCEMENT_DURATION = 600; // 5 minutes in ticks (20 ticks * 60 seconds * 5 minutes)
+    private static final int SLEEP_ADVANCEMENT_DURATION = 6000; // 5 minutes in ticks (20 ticks * 60 seconds * 5 minutes)
 
     public static void register() {
         ServerTickEvents.START_WORLD_TICK.register(TimeProgressionHandler::onWorldTick);

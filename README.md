@@ -6,6 +6,8 @@ Minecraft-SleepCycle
 
 The **SleepCycle** Mod for Minecraft enhances the sleeping mechanics by allowing time to pass progressively while players are asleep, rather than skipping the night instantly. This mod introduces new effects, custom advancements, and statistics related to sleep.
 Works in Minecraft 1.21
+Requires FabricAPI
+
 
 ---------------	
 
