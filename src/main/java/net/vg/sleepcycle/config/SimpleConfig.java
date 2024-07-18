@@ -253,4 +253,34 @@ public class SimpleConfig {
         return request.file.delete();
     }
 
+
+    public void set(String key, String value) {
+        config.put(key, value);
+    }
+
+    public void set(String key, int value) {
+        config.put(key, Integer.toString(value));
+    }
+
+    public void set(String key, boolean value) {
+        config.put(key, Boolean.toString(value));
+    }
+
+    public void set(String key, double value) {
+        config.put(key, Double.toString(value));
+    }
+
+    public void save() {
+        try {
+            PrintWriter writer = new PrintWriter(request.file, "UTF-8");
+            for (HashMap.Entry<String, String> entry : config.entrySet()) {
+                writer.println(entry.getKey() + "=" + entry.getValue());
+            }
+            writer.close();
+        } catch (IOException e) {
+            LOGGER.error("Failed to save config!");
+            LOGGER.trace(e);
+        }
+    }
+
 }

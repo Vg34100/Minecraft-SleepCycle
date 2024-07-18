@@ -64,4 +64,8 @@ public class ModConfigs {
 
         System.out.println("All " + configs.getConfigsList().size() + " have been set properly");
     }
+
+    public static void saveConfigs() {
+        CONFIG.save();
+    }
 }

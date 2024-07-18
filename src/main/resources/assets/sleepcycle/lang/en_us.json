@@ -18,5 +18,24 @@
   "stat.sleepcycle.time_slept": "Time Slept",
   "stat.sleepcycle.well_rested_sleeps": "Well Rested Sleeps",
   "stat.sleepcycle.tired_sleeps": "Tired Sleeps",
-  "stat.sleepcycle.health_regained": "Health Regained While Sleeping"
+  "stat.sleepcycle.health_regained": "Health Regained While Sleeping",
+  "sleep.change.camera.pos": "Sleeping Camera",
+
+  "sleep.allow.day.sleep": "Allow Day Sleeping",
+  "sleep.grant.buffs": "Sleeping Grants Buffs",
+  "sleep.do.regeneration": "Sleep Regeneration",
+  "sleep.change.tick.speed": "Sleep Tick Speed",
+
+  "sleep.day.skip.speed": "Day Skip Speed",
+  "sleep.sleep.tick.speed": "Sleep Tick Multiplier",
+  "sleep.well.rested.wait": "Well Rested Wait",
+  "sleep.tired.wait": "Tired Wait",
+
+  "sleep.well.rested.length": "Well Rested Length",
+  "sleep.tired.length": "Tired Length",
+
+  "sleep.sleep.button.height": "Sleep Button Height",
+
+
+  "gui.reset": "Reset"
 }
