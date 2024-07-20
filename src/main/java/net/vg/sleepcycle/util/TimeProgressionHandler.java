@@ -24,8 +24,6 @@ public class TimeProgressionHandler {
     private static final Map<ServerWorld, Integer> worldSleepTicks = new HashMap<>();
     private static final Map<ServerPlayerEntity, Integer> playerSleepTicks = new HashMap<>();
     private static final Set<ServerPlayerEntity> sleepingPlayers = new HashSet<>();
-    private static final int WELL_RESTED_DURATION = ModConfigs.WELL_RESTED_WAIT; // 8 in-game hours
-    private static final int TIRED_DURATION = ModConfigs.TIRED_WAIT; // 16 in-game hours
     private static int originalTickSpeed;
     private static final int SLEEP_ADVANCEMENT_DURATION = 6000; // 5 minutes in ticks (20 ticks * 60 seconds * 5 minutes)
 
@@ -71,11 +69,11 @@ public class TimeProgressionHandler {
 
                     int playerTicksAsleep = playerSleepTicks.get(player);
                     if (ModConfigs.GRANT_BUFFS) {
-                        if (!player.hasStatusEffect(ModEffects.WELL_RESTED) && playerTicksAsleep >= WELL_RESTED_DURATION && playerTicksAsleep < TIRED_DURATION) {
+                        if (!player.hasStatusEffect(ModEffects.WELL_RESTED) && playerTicksAsleep >= ModConfigs.WELL_RESTED_WAIT && playerTicksAsleep < ModConfigs.TIRED_WAIT) {
                             player.addStatusEffect(new StatusEffectInstance(ModEffects.WELL_RESTED, ModConfigs.WELL_RESTED_LENGTH, 0));
                             playSound(player, ModSounds.WELL_RESTED_SOUND);
 
-                        } else if (!player.hasStatusEffect(ModEffects.TIRED) && playerTicksAsleep >= TIRED_DURATION) {
+                        } else if (!player.hasStatusEffect(ModEffects.TIRED) && playerTicksAsleep >= ModConfigs.TIRED_WAIT) {
                             player.addStatusEffect(new StatusEffectInstance(ModEffects.TIRED, ModConfigs.TIRED_LENGTH, 0));
                             playSound(player, ModSounds.TIRED_SOUND);
                         }
@@ -106,7 +104,7 @@ public class TimeProgressionHandler {
             if (sleepingPlayerCount >= playersRequiredToSleep) {
                 if (ModConfigs.CHANGE_TICK_SPEED) {
                     if (world.getGameRules().getInt(GameRules.RANDOM_TICK_SPEED) == originalTickSpeed) {
-                        world.getGameRules().get(GameRules.RANDOM_TICK_SPEED).set((int) (originalTickSpeed * ModConfigs.SLEEP_TICK_SPEED), world.getServer());
+                        world.getGameRules().get(GameRules.RANDOM_TICK_SPEED).set((int) (originalTickSpeed * ModConfigs.DAY_SKIP_SPEED * ModConfigs.SLEEP_TICK_SPEED), world.getServer());
                     }
                 }
 

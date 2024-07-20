@@ -1,9 +1,8 @@
 package net.vg.sleepcycle.config;
 
-
 /*
  * Copyright (c) 2021 magistermaks
- * Slightly modified by Kaupenjoe 2021
+ * Modified by VgLevelUp 2024
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,20 +32,21 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class SimpleConfig {
 
     private static final Logger LOGGER = LogManager.getLogger("SimpleConfig");
-    private final HashMap<String, String> config = new HashMap<>();
+    private final LinkedHashMap<String, ConfigEntry> config = new LinkedHashMap<>();
     private final ConfigRequest request;
     private boolean broken = false;
 
     public interface DefaultConfig {
-        String get( String namespace );
+        String get(String namespace);
 
-        static String empty( String namespace ) {
+        static String empty(String namespace) {
             return "";
         }
     }
@@ -57,224 +57,160 @@ public class SimpleConfig {
         private final String filename;
         private DefaultConfig provider;
 
-        private ConfigRequest(File file, String filename ) {
+        private ConfigRequest(File file, String filename) {
             this.file = file;
             this.filename = filename;
             this.provider = DefaultConfig::empty;
         }
 
-        /**
-         * Sets the default config provider, used to generate the
-         * config if it's missing.
-         *
-         * @param provider default config provider
-         * @return current config request object
-         * @see DefaultConfig
-         */
-        public ConfigRequest provider( DefaultConfig provider ) {
+        public ConfigRequest provider(DefaultConfig provider) {
             this.provider = provider;
             return this;
         }
 
-        /**
-         * Loads the config from the filesystem.
-         *
-         * @return config object
-         * @see SimpleConfig
-         */
         public SimpleConfig request() {
-            return new SimpleConfig( this );
+            return new SimpleConfig(this);
         }
 
         private String getConfig() {
-            return provider.get( filename ) + "\n";
+            return provider.get(filename) + "\n";
         }
-
     }
 
-    /**
-     * Creates new config request object, ideally `namespace`
-     * should be the name of the mod id of the requesting mod
-     *
-     * @param filename - name of the config file
-     * @return new config request object
-     */
-    public static ConfigRequest of( String filename ) {
+    public static ConfigRequest of(String filename) {
         Path path = FabricLoader.getInstance().getConfigDir();
-        return new ConfigRequest( path.resolve( filename + ".properties" ).toFile(), filename );
+        return new ConfigRequest(path.resolve(filename + ".properties").toFile(), filename);
     }
 
     private void createConfig() throws IOException {
-
-        // try creating missing files
         request.file.getParentFile().mkdirs();
-        Files.createFile( request.file.toPath() );
+        Files.createFile(request.file.toPath());
 
-        // write default config data
         PrintWriter writer = new PrintWriter(request.file, "UTF-8");
-        writer.write( request.getConfig() );
+        writer.write(request.getConfig());
         writer.close();
-
     }
 
     private void loadConfig() throws IOException {
-        Scanner reader = new Scanner( request.file );
-        for( int line = 1; reader.hasNextLine(); line ++ ) {
-            parseConfigEntry( reader.nextLine(), line );
+        Scanner reader = new Scanner(request.file);
+        StringBuilder currentComment = new StringBuilder();
+        for (int line = 1; reader.hasNextLine(); line++) {
+            currentComment = parseConfigEntry(reader.nextLine(), line, currentComment);
         }
     }
 
-    // Modification by Kaupenjoe
-    private void parseConfigEntry( String entry, int line ) {
-        if( !entry.isEmpty() && !entry.startsWith( "#" ) ) {
+    private StringBuilder parseConfigEntry(String entry, int line, StringBuilder currentComment) {
+        if (entry.startsWith("#")) {
+            currentComment.append(entry).append("\n");
+        } else if (!entry.isEmpty()) {
             String[] parts = entry.split("=", 2);
-            if( parts.length == 2 ) {
-                // Recognizes comments after a value
-                String temp = parts[1].split(" #")[0];
-                config.put( parts[0], temp );
-            }else{
+            if (parts.length == 2) {
+                config.put(parts[0], new ConfigEntry(parts[1].split(" #")[0], currentComment.toString()));
+                currentComment.setLength(0);  // clear the currentComment
+            } else {
                 throw new RuntimeException("Syntax error in config file on line " + line + "!");
             }
+        } else {
+            currentComment.append("\n");
         }
+        return currentComment;
     }
 
-    private SimpleConfig(ConfigRequest request ) {
+    private SimpleConfig(ConfigRequest request) {
         this.request = request;
         String identifier = "Config '" + request.filename + "'";
 
-        if( !request.file.exists() ) {
-            LOGGER.info( identifier + " is missing, generating default one..." );
+        if (!request.file.exists()) {
+            LOGGER.info(identifier + " is missing, generating default one...");
 
             try {
                 createConfig();
             } catch (IOException e) {
-                LOGGER.error( identifier + " failed to generate!" );
-                LOGGER.trace( e );
+                LOGGER.error(identifier + " failed to generate!");
+                LOGGER.trace(e);
                 broken = true;
             }
         }
 
-        if( !broken ) {
+        if (!broken) {
             try {
                 loadConfig();
             } catch (Exception e) {
-                LOGGER.error( identifier + " failed to load!" );
-                LOGGER.trace( e );
+                LOGGER.error(identifier + " failed to load!");
+                LOGGER.trace(e);
                 broken = true;
             }
         }
-
     }
 
-    /**
-     * Queries a value from config, returns `null` if the
-     * key does not exist.
-     *
-     * @return  value corresponding to the given key
-     * @see     SimpleConfig#getOrDefault
-     */
-    @Deprecated
-    public String get( String key ) {
-        return config.get( key );
+    public String get(String key) {
+        ConfigEntry entry = config.get(key);
+        return entry != null ? entry.value : null;
     }
 
-    /**
-     * Returns string value from config corresponding to the given
-     * key, or the default string if the key is missing.
-     *
-     * @return  value corresponding to the given key, or the default value
-     */
-    public String getOrDefault( String key, String def ) {
+    public String getOrDefault(String key, String def) {
         String val = get(key);
         return val == null ? def : val;
     }
 
-    /**
-     * Returns integer value from config corresponding to the given
-     * key, or the default integer if the key is missing or invalid.
-     *
-     * @return  value corresponding to the given key, or the default value
-     */
-    public int getOrDefault( String key, int def ) {
+    public int getOrDefault(String key, int def) {
         try {
-            return Integer.parseInt( get(key) );
+            return Integer.parseInt(get(key));
         } catch (Exception e) {
             return def;
         }
     }
 
-    /**
-     * Returns boolean value from config corresponding to the given
-     * key, or the default boolean if the key is missing.
-     *
-     * @return  value corresponding to the given key, or the default value
-     */
-    public boolean getOrDefault( String key, boolean def ) {
+    public boolean getOrDefault(String key, boolean def) {
         String val = get(key);
-        if( val != null ) {
+        if (val != null) {
             return val.equalsIgnoreCase("true");
         }
-
         return def;
     }
 
-    /**
-     * Returns double value from config corresponding to the given
-     * key, or the default string if the key is missing or invalid.
-     *
-     * @return  value corresponding to the given key, or the default value
-     */
-    public double getOrDefault( String key, double def ) {
+    public double getOrDefault(String key, double def) {
         try {
-            return Double.parseDouble( get(key) );
+            return Double.parseDouble(get(key));
         } catch (Exception e) {
             return def;
         }
     }
 
-    /**
-     * If any error occurred during loading or reading from the config
-     * a 'broken' flag is set, indicating that the config's state
-     * is undefined and should be discarded using `delete()`
-     *
-     * @return the 'broken' flag of the configuration
-     */
     public boolean isBroken() {
         return broken;
     }
 
-    /**
-     * deletes the config file from the filesystem
-     *
-     * @return true if the operation was successful
-     */
     public boolean delete() {
-        LOGGER.warn( "Config '" + request.filename + "' was removed from existence! Restart the game to regenerate it." );
+        LOGGER.warn("Config '" + request.filename + "' was removed from existence! Restart the game to regenerate it.");
         return request.file.delete();
     }
 
-
     public void set(String key, String value) {
-        config.put(key, value);
+        config.put(key, new ConfigEntry(value, config.get(key).comment));
     }
 
     public void set(String key, int value) {
-        config.put(key, Integer.toString(value));
+        config.put(key, new ConfigEntry(Integer.toString(value), config.get(key).comment));
     }
 
     public void set(String key, boolean value) {
-        config.put(key, Boolean.toString(value));
+        config.put(key, new ConfigEntry(Boolean.toString(value), config.get(key).comment));
     }
 
     public void set(String key, double value) {
-        config.put(key, Double.toString(value));
+        config.put(key, new ConfigEntry(Double.toString(value), config.get(key).comment));
     }
 
     public void save() {
         try {
             PrintWriter writer = new PrintWriter(request.file, "UTF-8");
-            for (HashMap.Entry<String, String> entry : config.entrySet()) {
-                writer.println(entry.getKey() + "=" + entry.getValue());
+            for (Map.Entry<String, ConfigEntry> entry : config.entrySet()) {
+                if (!entry.getValue().comment.isEmpty()) {
+                    writer.println(entry.getValue().comment.trim());
+                }
+                writer.println(entry.getKey() + "=" + entry.getValue().value);
+                writer.println();  // Ensure there's a blank line between entries
             }
             writer.close();
         } catch (IOException e) {
@@ -283,4 +219,22 @@ public class SimpleConfig {
         }
     }
 
+    public void setComment(String key, String comment) {
+        ConfigEntry entry = config.get(key);
+        if (entry != null) {
+            entry.comment = comment;
+        } else {
+            config.put(key, new ConfigEntry("", comment));
+        }
+    }
+
+    private static class ConfigEntry {
+        String value;
+        String comment;
+
+        ConfigEntry(String value, String comment) {
+            this.value = value;
+            this.comment = comment;
+        }
+    }
 }

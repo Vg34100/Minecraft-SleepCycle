@@ -19,23 +19,51 @@
   "stat.sleepcycle.well_rested_sleeps": "Well Rested Sleeps",
   "stat.sleepcycle.tired_sleeps": "Tired Sleeps",
   "stat.sleepcycle.health_regained": "Health Regained While Sleeping",
+
+
+
+
   "sleep.change.camera.pos": "Sleeping Camera",
-
-  "sleep.allow.day.sleep": "Allow Day Sleeping",
-  "sleep.grant.buffs": "Sleeping Grants Buffs",
-  "sleep.do.regeneration": "Sleep Regeneration",
-  "sleep.change.tick.speed": "Sleep Tick Speed",
-
-  "sleep.day.skip.speed": "Day Skip Speed",
-  "sleep.sleep.tick.speed": "Sleep Tick Multiplier",
-  "sleep.well.rested.wait": "Well Rested Wait",
-  "sleep.tired.wait": "Tired Wait",
-
-  "sleep.well.rested.length": "Well Rested Length",
-  "sleep.tired.length": "Tired Length",
+  "tooltip.sleep.change.camera.pos": "Enables or disables the adjusted camera position when laying in bed. (Default: true)",
 
   "sleep.sleep.button.height": "Sleep Button Height",
+  "tooltip.sleep.sleep.button.height": "Adjusts the height of the 'Leave Bed' button when laying in bed. (Default: 30)",
+
+  "sleep.allow.day.sleep": "Allow Day Sleeping",
+  "tooltip.sleep.allow.day.sleep": "Enables or disables the player's ability to sleep during the day. (Default: true)",
+
+  "sleep.grant.buffs": "Sleeping Grants Buffs",
+  "tooltip.sleep.grant.buffs": "Enables or disables buffs to players during sleeping. (Default: true)",
+
+  "sleep.do.regeneration": "Sleep Regeneration",
+  "tooltip.sleep.do.regeneration": "Enables or disables health regeneration while sleeping. (Default: true)",
+
+  "sleep.change.tick.speed": "Sleep Tick Speed",
+  "tooltip.sleep.change.tick.speed": "Enables or disables the increased tick speed while sleeping. (Default: true)",
+
+  "sleep.day.skip.speed": "Day Skip Speed",
+  "tooltip.sleep.day.skip.speed": "Number of ticks the time of day advances per tick while sleeping. (Default: 25.0)",
+
+  "sleep.sleep.tick.speed": "Sleep Tick Multiplier",
+  "tooltip.sleep.sleep.tick.speed": "Multiplier for if the random tick speed should be further increased while sleeping. (Default: 1.0)",
+
+  "sleep.well.rested.wait": "Well Rested Wait",
+  "tooltip.sleep.well.rested.wait": "Time to wait before the 'Well Rested' status is applied during sleep. (Default: 240)",
+
+  "sleep.tired.wait": "Tired Wait",
+  "tooltip.sleep.tired.wait": "Time to wait before the 'Tired' status is applied during sleep. (Default: 350)",
+
+  "sleep.well.rested.length": "Well Rested Length",
+  "tooltip.sleep.well.rested.length": "Duration of the 'Well Rested' status from sleeping. (Default: 2400)",
+
+  "sleep.tired.length": "Tired Length",
+  "tooltip.sleep.tired.length": "Duration of the 'Tired' status from sleeping. (Default: 600)",
 
 
-  "gui.reset": "Reset"
+
+
+  "gui.reset": "Reset",
+  "config.general.title": "Sleep Cycle Settings",
+  "config.server.title": "Server Settings",
+  "config.client.title": "Client Settings"
 }
