@@ -92,8 +92,8 @@ public class ServerConfigScreen extends GameOptionsScreen {
         );
 
         SimpleOption<Double> sleepTickSpeed = new SimpleOption<>(
-                "sleep.sleep.tick.speed",
-                SimpleOption.constantTooltip(Text.translatable("tooltip.sleep.sleep.tick.speed")),
+                "sleep.sleep.tick.multiplier",
+                SimpleOption.constantTooltip(Text.translatable("tooltip.sleep.sleep.tick.multiplier")),
                 (optionText, value) -> Text.translatable("options.generic_value",
                         optionText,
                         Text.translatable("options.multiplier", String.format("%.1f", value))
@@ -104,7 +104,7 @@ public class ServerConfigScreen extends GameOptionsScreen {
                 ),
                 Codec.doubleRange(0.0, 3.0),
                 1.0, // Default value (1.0x)
-                (value) -> ModConfigs.SLEEP_TICK_SPEED = value
+                (value) -> ModConfigs.SLEEP_TICK_MULTIPLIER = value
         );
 
 

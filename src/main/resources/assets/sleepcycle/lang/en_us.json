@@ -44,8 +44,8 @@
   "sleep.day.skip.speed": "Day Skip Speed",
   "tooltip.sleep.day.skip.speed": "Number of ticks the time of day advances per tick while sleeping. (Default: 25.0)",
 
-  "sleep.sleep.tick.speed": "Sleep Tick Multiplier",
-  "tooltip.sleep.sleep.tick.speed": "Multiplier for if the random tick speed should be further increased while sleeping. (Default: 1.0)",
+  "sleep.sleep.tick.multiplier": "Sleep Tick Multiplier",
+  "tooltip.sleep.sleep.tick.multiplier": "Multiplier for if the random tick speed should be further increased while sleeping. (Default: 1.0)",
 
   "sleep.well.rested.wait": "Well Rested Wait",
   "tooltip.sleep.well.rested.wait": "Time to wait before the 'Well Rested' status is applied during sleep. (Default: 240)",

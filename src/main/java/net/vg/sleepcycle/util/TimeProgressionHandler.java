@@ -1,6 +1,7 @@
 package net.vg.sleepcycle.util;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -24,12 +25,14 @@ public class TimeProgressionHandler {
     private static final Map<ServerWorld, Integer> worldSleepTicks = new HashMap<>();
     private static final Map<ServerPlayerEntity, Integer> playerSleepTicks = new HashMap<>();
     private static final Set<ServerPlayerEntity> sleepingPlayers = new HashSet<>();
-    private static int originalTickSpeed;
+    private static Integer originalTickSpeed = null;
     private static final int SLEEP_ADVANCEMENT_DURATION = 6000; // 5 minutes in ticks (20 ticks * 60 seconds * 5 minutes)
 
     public static void register() {
         ServerTickEvents.START_WORLD_TICK.register(TimeProgressionHandler::onWorldTick);
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> onPlayerDisconnect(handler.getPlayer(), server));
+        ServerWorldEvents.LOAD.register((server, world) -> onWorldLoad(world));
+
     }
 
     public static void addWorld(ServerWorld world) {
@@ -42,7 +45,9 @@ public class TimeProgressionHandler {
     public static void removeWorld(ServerWorld world) {
         worldSleepTicks.remove(world);
         // Reset the tick speed
-        world.getGameRules().get(GameRules.RANDOM_TICK_SPEED).set(originalTickSpeed, world.getServer());
+        if (originalTickSpeed != null) {
+            world.getGameRules().get(GameRules.RANDOM_TICK_SPEED).set(originalTickSpeed, world.getServer());
+        }
     }
 
     private static void onWorldTick(ServerWorld world) {
@@ -102,9 +107,10 @@ public class TimeProgressionHandler {
             }
 
             if (sleepingPlayerCount >= playersRequiredToSleep) {
-                if (ModConfigs.CHANGE_TICK_SPEED) {
-                    if (world.getGameRules().getInt(GameRules.RANDOM_TICK_SPEED) == originalTickSpeed) {
-                        world.getGameRules().get(GameRules.RANDOM_TICK_SPEED).set((int) (originalTickSpeed * ModConfigs.DAY_SKIP_SPEED * ModConfigs.SLEEP_TICK_SPEED), world.getServer());
+                if (ModConfigs.CHANGE_TICK_SPEED && sleepingPlayerCount > 0) {  // Added sleepingPlayerCount > 0 check
+                    if (originalTickSpeed != null && world.getGameRules().getInt(GameRules.RANDOM_TICK_SPEED) == originalTickSpeed) {
+                        world.getGameRules().get(GameRules.RANDOM_TICK_SPEED).set((int) (originalTickSpeed * ModConfigs.DAY_SKIP_SPEED * ModConfigs.SLEEP_TICK_MULTIPLIER), world.getServer());
+                        System.out.println("Increasing world tick speed");
                     }
                 }
 
@@ -122,7 +128,9 @@ public class TimeProgressionHandler {
 
                 worldSleepTicks.put(world, ticksAsleep + 1); // Increment sleep ticks
             } else {
-                world.getGameRules().get(GameRules.RANDOM_TICK_SPEED).set(originalTickSpeed, world.getServer());
+                if (originalTickSpeed != null) {
+                    world.getGameRules().get(GameRules.RANDOM_TICK_SPEED).set(originalTickSpeed, world.getServer());
+                }
                 if (sleepingPlayerCount == 0) {
                     removeWorld(world);
                 }
@@ -155,6 +163,9 @@ public class TimeProgressionHandler {
         System.out.println("SleepCycle: on player disconnect");
 
         for (ServerWorld world : server.getWorlds()) {
+
+
+
             List<ServerPlayerEntity> players = world.getPlayers();
             long sleepingPlayerCount = players.stream().filter(ServerPlayerEntity::isSleeping).count();
 
@@ -162,12 +173,20 @@ public class TimeProgressionHandler {
                 playerSleepTicks.remove(player);
                 sleepingPlayers.remove(player);
 
-                if (sleepingPlayerCount == 0) {
-                    removeWorld(world);
-                }
+                removeWorld(world);
+                System.out.println("Removing the World");
             }
-            world.getGameRules().get(GameRules.RANDOM_TICK_SPEED).set(originalTickSpeed, server);
+
+            if (originalTickSpeed != null) {
+                world.getGameRules().get(GameRules.RANDOM_TICK_SPEED).set(originalTickSpeed, server);
+                System.out.println("Resetting world tick speed");
+            }
 
         }
     }
+
+    private static void onWorldLoad(ServerWorld world) {
+//        originalTickSpeed = world.getGameRules().getInt(GameRules.RANDOM_TICK_SPEED);
+    }
+
 }

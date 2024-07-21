@@ -13,7 +13,7 @@ public class ModConfigs {
     public static boolean CHANGE_TICK_SPEED;
     public static boolean CHANGE_CAMERA_POS;
     public static double DAY_SKIP_SPEED;
-    public static double SLEEP_TICK_SPEED;
+    public static double SLEEP_TICK_MULTIPLIER;
 
     public static boolean GRANT_BUFFS;
     public static boolean DO_REGEN;
@@ -109,7 +109,7 @@ public class ModConfigs {
         TIRED_LENGTH = CONFIG.getOrDefault("sleep.tired.length", 600);
         // Double
         DAY_SKIP_SPEED = CONFIG.getOrDefault("sleep.day.skip.speed", 60.0d);
-        SLEEP_TICK_SPEED = CONFIG.getOrDefault("sleep.sleep.tick.speed", 1.0d);
+        SLEEP_TICK_MULTIPLIER = CONFIG.getOrDefault("sleep.sleep.tick.multiplier", 1.0d);
 
 
         // Client Settings
@@ -126,7 +126,7 @@ public class ModConfigs {
         CONFIG.set("sleep.grant.buffs", GRANT_BUFFS);
         CONFIG.set("sleep.do.regeneration", DO_REGEN);
         CONFIG.set("sleep.day.skip.speed", DAY_SKIP_SPEED);
-        CONFIG.set("sleep.sleep.tick.speed", SLEEP_TICK_SPEED);
+        CONFIG.set("sleep.sleep.tick.multiplier", SLEEP_TICK_MULTIPLIER);
         CONFIG.set("sleep.well.rested.wait", WELL_RESTED_WAIT);
         CONFIG.set("sleep.tired.wait", TIRED_WAIT);
         CONFIG.set("sleep.well.rested.length", WELL_RESTED_LENGTH);
