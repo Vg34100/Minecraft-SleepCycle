@@ -24,6 +24,20 @@ public class ModConfigs {
     public static int WELL_RESTED_LENGTH;
     public static int TIRED_LENGTH;
 
+    public static String[] necessaryConfigs = {
+        "sleep.allow.day.sleep",
+        "sleep.day.skip.speed",
+        "sleep.sleep.tick.multiplier",
+        "sleep.well.rested.wait",
+        "sleep.tired.wait",
+        "sleep.well.rested.length",
+        "sleep.tired.length",
+        "sleep.grant.buffs",
+        "sleep.do.regeneration",
+        "sleep.change.tick.speed",
+        "sleep.sleep.button.height",
+        "sleep.change.camera.pos"
+    };
 
     public static void registerConfigs() {
         configs = new ModConfigProvider();
@@ -51,7 +65,7 @@ public class ModConfigs {
                 "These speeds are approximations and also do not consider the wind up effect of falling sleep.",
                 "Default: 60.0 -> night to day transition (13000 to 1000) in 10 real-life seconds (~12 seconds with wind up)"
         ));
-        configs.addKeyValuePair(new Pair<>("sleep.sleep.tick.speed", 1.0d), Arrays.asList(
+        configs.addKeyValuePair(new Pair<>("sleep.sleep.tick.multiplier", 1.0d), Arrays.asList(
                 "Multiplier for if the random tick speed should be further increased while sleeping.",
                 "Default: 1.0"
         ));
@@ -121,17 +135,20 @@ public class ModConfigs {
 
     public static void saveConfigs() {
         CONFIG.set("sleep.allow.day.sleep", ALLOW_DAY_SLEEPING);
-        CONFIG.set("sleep.change.tick.speed", CHANGE_TICK_SPEED);
-        CONFIG.set("sleep.change.camera.pos", CHANGE_CAMERA_POS);
-        CONFIG.set("sleep.grant.buffs", GRANT_BUFFS);
-        CONFIG.set("sleep.do.regeneration", DO_REGEN);
         CONFIG.set("sleep.day.skip.speed", DAY_SKIP_SPEED);
         CONFIG.set("sleep.sleep.tick.multiplier", SLEEP_TICK_MULTIPLIER);
         CONFIG.set("sleep.well.rested.wait", WELL_RESTED_WAIT);
         CONFIG.set("sleep.tired.wait", TIRED_WAIT);
         CONFIG.set("sleep.well.rested.length", WELL_RESTED_LENGTH);
         CONFIG.set("sleep.tired.length", TIRED_LENGTH);
+        CONFIG.set("sleep.grant.buffs", GRANT_BUFFS);
+        CONFIG.set("sleep.do.regeneration", DO_REGEN);
+        CONFIG.set("sleep.change.tick.speed", CHANGE_TICK_SPEED);
+
+
         CONFIG.set("sleep.sleep.button.height", SLEEP_BUTTON_HEIGHT);
+        CONFIG.set("sleep.change.camera.pos", CHANGE_CAMERA_POS);
+
 
         CONFIG.save();
     }

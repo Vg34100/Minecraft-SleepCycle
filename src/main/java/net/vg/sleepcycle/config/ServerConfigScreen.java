@@ -142,9 +142,10 @@ public class ServerConfigScreen extends GameOptionsScreen {
     }
     @Override
     public void close() {
-        super.close();
         ModConfigs.saveConfigs();
+        this.client.setScreen(this.parent);
     }
+
     private static Text getGenericValueText(Text prefix, Text value) {
         return Text.translatable("options.generic_value", prefix, value);
     }

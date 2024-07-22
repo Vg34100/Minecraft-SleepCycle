@@ -24,6 +24,7 @@ package net.vg.sleepcycle.config;
  */
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.vg.sleepcycle.SleepCycle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,6 +42,11 @@ public class SimpleConfig {
     private static final Logger LOGGER = LogManager.getLogger("SimpleConfig");
     private final LinkedHashMap<String, ConfigEntry> config = new LinkedHashMap<>();
     private final ConfigRequest request;
+
+    public static final String MOD_ID = SleepCycle.MOD_ID;
+    public static final String MOD_NAME = SleepCycle.MOD_NAME;
+    public static final String MOD_VERSION = SleepCycle.MOD_VERSION;
+
     private boolean broken = false;
 
     public interface DefaultConfig {
@@ -79,7 +85,8 @@ public class SimpleConfig {
 
     public static ConfigRequest of(String filename) {
         Path path = FabricLoader.getInstance().getConfigDir();
-        return new ConfigRequest(path.resolve(filename + ".properties").toFile(), filename);
+        String versionedFilename = filename + "-" + MOD_VERSION + ".properties";
+        return new ConfigRequest(path.resolve(versionedFilename).toFile(), versionedFilename);
     }
 
     private void createConfig() throws IOException {
@@ -187,37 +194,81 @@ public class SimpleConfig {
     }
 
     public void set(String key, String value) {
-        config.put(key, new ConfigEntry(value, config.get(key).comment));
+        ConfigEntry entry = config.get(key);
+        if (entry != null) {
+            entry.value = value;
+        } else {
+            config.put(key, new ConfigEntry(value, ""));
+        }
     }
 
     public void set(String key, int value) {
-        config.put(key, new ConfigEntry(Integer.toString(value), config.get(key).comment));
+        ConfigEntry entry = config.get(key);
+        if (entry != null) {
+            entry.value = Integer.toString(value);
+        } else {
+            config.put(key, new ConfigEntry(Integer.toString(value), ""));
+        }
     }
 
     public void set(String key, boolean value) {
-        config.put(key, new ConfigEntry(Boolean.toString(value), config.get(key).comment));
+        ConfigEntry entry = config.get(key);
+        if (entry != null) {
+            entry.value = Boolean.toString(value);
+        } else {
+            config.put(key, new ConfigEntry(Boolean.toString(value), ""));
+        }
     }
 
     public void set(String key, double value) {
-        config.put(key, new ConfigEntry(Double.toString(value), config.get(key).comment));
+        ConfigEntry entry = config.get(key);
+        if (entry != null) {
+            entry.value = Double.toString(value);
+        } else {
+            config.put(key, new ConfigEntry(Double.toString(value), ""));
+        }
     }
+
+
 
     public void save() {
         try {
-            PrintWriter writer = new PrintWriter(request.file, "UTF-8");
-            for (Map.Entry<String, ConfigEntry> entry : config.entrySet()) {
-                if (!entry.getValue().comment.isEmpty()) {
-                    writer.println(entry.getValue().comment.trim());
+            boolean needsRecreation = false;
+
+            // List of all necessary config keys
+
+            String[] necessaryConfigs = ModConfigs.necessaryConfigs;
+
+            // Check if all necessary configs are present
+            for (String key : necessaryConfigs) {
+                if (!config.containsKey(key)) {
+                    needsRecreation = true;
+                    break;
                 }
-                writer.println(entry.getKey() + "=" + entry.getValue().value);
-                writer.println();  // Ensure there's a blank line between entries
             }
-            writer.close();
+
+            if (needsRecreation) {
+                createConfig();
+                loadConfig();
+            } else {
+                PrintWriter writer = new PrintWriter(request.file, "UTF-8");
+                for (Map.Entry<String, ConfigEntry> entry : config.entrySet()) {
+                    if (entry.getValue() != null && !entry.getValue().comment.isEmpty()) {
+                        writer.println(entry.getValue().comment.trim());
+                    }
+                    if (entry.getValue() != null) {
+                        writer.println(entry.getKey() + "=" + entry.getValue().value);
+                        writer.println();  // Ensure there's a blank line between entries
+                    }
+                }
+                writer.close();
+            }
         } catch (IOException e) {
             LOGGER.error("Failed to save config!");
             LOGGER.trace(e);
         }
     }
+
 
     public void setComment(String key, String comment) {
         ConfigEntry entry = config.get(key);

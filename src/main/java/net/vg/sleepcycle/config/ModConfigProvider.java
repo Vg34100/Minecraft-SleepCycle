@@ -1,6 +1,7 @@
 package net.vg.sleepcycle.config;
 
 import com.mojang.datafixers.util.Pair;
+import net.vg.sleepcycle.SleepCycle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class ModConfigProvider implements SimpleConfig.DefaultConfig {
     @Override
     public String get(String namespace) {
         StringBuilder sb = new StringBuilder();
-        sb.append("# Sleep Cycle Settings\n\n");
+        sb.append("# " + SleepCycle.MOD_NAME + " Settings\n\n");
         for (int i = 0; i < configsList.size(); i++) {
             Pair<String, ?> config = configsList.get(i);
             List<String> comment = comments.get(i).getSecond();
