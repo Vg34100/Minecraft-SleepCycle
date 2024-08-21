@@ -4,6 +4,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.GameRules;
+import net.vg.sleepcycle.config.ModConfigs;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -26,7 +27,7 @@ public abstract class MinecraftServerMixin {
     private void onTickServerStart(BooleanSupplier hasTimeLeft, CallbackInfo ci) {
         if (!sleepcycle$isAcceleratingTime && sleepcycle$areEnoughPlayersSleeping()) {
             sleepcycle$isAcceleratingTime = true;
-            int accelerationFactor = 200; // Adjust this value to control how fast time passes
+            int accelerationFactor = ModConfigs.TICKS_PER_TICK; // Adjust this value to control how fast time passes
             for (int i = 1; i < accelerationFactor && haveTime(); i++) {
                 tickServer(hasTimeLeft);
             }

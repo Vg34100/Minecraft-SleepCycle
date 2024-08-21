@@ -24,6 +24,9 @@ public class ModConfigs {
     public static int WELL_RESTED_LENGTH;
     public static int TIRED_LENGTH;
 
+    // experimental
+    public static int TICKS_PER_TICK;
+
     public static String[] necessaryConfigs = {
         "sleep.allow.day.sleep",
         "sleep.day.skip.speed",
@@ -36,7 +39,8 @@ public class ModConfigs {
         "sleep.do.regeneration",
         "sleep.change.tick.speed",
         "sleep.sleep.button.height",
-        "sleep.change.camera.pos"
+        "sleep.change.camera.pos",
+        "sleep.tick.per.tick"
     };
 
     public static void registerConfigs() {
@@ -107,6 +111,16 @@ public class ModConfigs {
                 "Client-side setting.",
                 "Default: true"
         ));
+
+        // Experimental
+        configs.addKeyValuePair(new Pair<>("sleep.tick.per.tick", 1), Arrays.asList(
+                "*Experimental Settings*",
+                "Defines how many ticks to tick the server every tick.",
+                "Ex) A value of 2 will make the server tick twice for every normal tick.",
+                "Affectively doubles the speed of a Minecraft day.",
+                "Could become the future new method for the mod, but currently haveTime() limits how fast it can go.",
+                "Default: 1"
+        ));
     }
 
     private static void assignConfigs() {
@@ -130,6 +144,9 @@ public class ModConfigs {
         CHANGE_CAMERA_POS = CONFIG.getOrDefault("sleep.change.camera.pos", true);
         SLEEP_BUTTON_HEIGHT = CONFIG.getOrDefault("sleep.sleep.button.height", 30);
 
+        // Experimental
+        TICKS_PER_TICK = CONFIG.getOrDefault("sleep.tick.per.tick", 1);
+
         System.out.println("All " + configs.getConfigsList().size() + " have been set properly");
     }
 
@@ -144,6 +161,8 @@ public class ModConfigs {
         CONFIG.set("sleep.grant.buffs", GRANT_BUFFS);
         CONFIG.set("sleep.do.regeneration", DO_REGEN);
         CONFIG.set("sleep.change.tick.speed", CHANGE_TICK_SPEED);
+
+        CONFIG.set("sleep.tick.per.tick", TICKS_PER_TICK);
 
 
         CONFIG.set("sleep.sleep.button.height", SLEEP_BUTTON_HEIGHT);

@@ -3,15 +3,17 @@
   "id": "sleepcycle",
   "version": "${version}",
   "name": "Sleep Cycle",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "Enhances the sleeping mechanics by allowing time to pass progressively while players are asleep.",
   "authors": [
-    "Me!"
+    "VgLevelUp"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://modrinth.com/mod/sleepcycle",
+    "sources": "https://github.com/Vg34100/Minecraft-SleepCycle",
+    "issues": "https://github.com/Vg34100/Minecraft-SleepCycle/issues"
+
   },
-  "license": "CC0-1.0",
+  "license": "MIT",
   "icon": "assets/sleepcycle/icon.png",
   "environment": "*",
   "entrypoints": {
@@ -20,6 +22,12 @@
     ],
     "client": [
       "net.vg.sleepcycle.fabric.client.SleepCycleFabricClient"
+    ],
+    "modmenu": [
+      "net.vg.sleepcycle.fabric.modmenu.StructureVoidableModMenu"
+    ],
+    "fabric-datagen": [
+      "net.vg.sleepcycle.data.ModDataGenerator"
     ]
   },
   "mixins": [
@@ -33,6 +41,15 @@
     "fabric-api": "*"
   },
   "suggests": {
-    "another-mod": "*"
+    "modmenu": "*"
+  },
+  "custom": {
+    "modmenu" : {
+      "links": {
+        "modmenu.modrinth": "https://modrinth.com/mod/sleepcycle",
+        "modmenu.discord": "https://discord.gg/Xfcysgn3jU",
+        "modmenu.donate": "https://buymeacoffee.com/vglevelup"
+      }
+    }
   }
 }

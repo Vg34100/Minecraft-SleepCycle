@@ -1,0 +1,30 @@
+{
+  "parent": "sleepcycle:root",
+  "criteria": {
+    "sleep_5_min": {
+      "conditions": {
+        "instance": {}
+      },
+      "trigger": "sleepcycle:tutorialmod.sleep"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.sleepcycle.sleep_5_min.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:clock"
+    },
+    "title": {
+      "translate": "advancements.sleepcycle.sleep_5_min.title"
+    }
+  },
+  "requirements": [
+    [
+      "sleep_5_min"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

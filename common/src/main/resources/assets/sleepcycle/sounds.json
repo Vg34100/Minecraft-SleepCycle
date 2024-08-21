@@ -1,0 +1,16 @@
+{
+  "well_rested": {
+    "sounds": [
+      {
+        "name": "sleepcycle:well_rested"
+      }
+    ]
+  },
+  "tired": {
+    "sounds": [
+      {
+        "name": "sleepcycle:tired"
+      }
+    ]
+  }
+}

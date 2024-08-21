@@ -1,3 +1,4 @@
+// fabric
 plugins {
     id 'com.github.johnrengelman.shadow'
 }
@@ -24,6 +25,18 @@ configurations {
     }
 }
 
+repositories {
+    maven {
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/"
+    }
+}
+
+fabricApi {
+    configureDataGeneration()
+}
+
+
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
 
@@ -33,9 +46,13 @@ dependencies {
     // Architectury API. This is optional, and you can comment it out if you don't need it.
     modImplementation "dev.architectury:architectury-fabric:$rootProject.architectury_api_version"
 
+    // Add ModMenu dependency
+    modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 }
+
 
 processResources {
     inputs.property 'version', project.version
