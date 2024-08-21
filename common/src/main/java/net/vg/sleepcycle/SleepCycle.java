@@ -2,6 +2,7 @@ package net.vg.sleepcycle;
 
 import dev.architectury.registry.registries.DeferredRegister;
 import net.vg.sleepcycle.advancement.ModCriteria;
+import net.vg.sleepcycle.block.entity.ModBlockEntities;
 import net.vg.sleepcycle.config.ModConfigs;
 import net.vg.sleepcycle.effect.ModEffects;
 import net.vg.sleepcycle.item.ModItems;
@@ -23,7 +24,7 @@ public final class SleepCycle {
         // criteria
         ModCriteria.register();
 
-
+        ModBlockEntities.register();
         ModItems.register();
 
 

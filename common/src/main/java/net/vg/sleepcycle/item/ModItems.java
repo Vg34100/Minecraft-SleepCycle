@@ -18,7 +18,10 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Constants.MOD_ID, Registries.ITEM);
 
     public static final RegistrySupplier<Block> SLEEPING_BAG = BLOCKS.register("sleeping_bag",
-            () -> new SleepingBagBlock(DyeColor.BLACK, BlockBehaviour.Properties.of().strength(0.2F).noOcclusion()));
+            () -> new SleepingBagBlock(DyeColor.BLACK, BlockBehaviour.Properties.of()
+                    .strength(0.2F)
+                    .noOcclusion()
+                    .dynamicShape()));  // Add dynamicShape() here
 
     public static final RegistrySupplier<Item> SLEEPING_BAG_ITEM = ITEMS.register("sleeping_bag",
             () -> new SleepingBagItem(SLEEPING_BAG.get(), new Item.Properties().arch$tab(CreativeModeTabs.FUNCTIONAL_BLOCKS).stacksTo(1)));
